@@ -122,6 +122,7 @@ if prop("way.prop","selected")=="2" then
       "prep.prop",
       
       "install busybox","",1,
+      "install init.d support","",1,
       "install root","",1,
       "wipe caches","",1
     );

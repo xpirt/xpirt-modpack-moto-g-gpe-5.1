@@ -43,6 +43,13 @@ then
     if 
         file_getprop("/tmp/aroma-data/prep.prop","item.0.2") == "1"
     then
+       ui_print("|-> enabling init.d support");
+           package_extract_dir("common/!_first_time/init_d", "/system");
+    endif; 
+
+    if 
+        file_getprop("/tmp/aroma-data/prep.prop","item.0.3") == "1"
+    then
        ui_print("|-> rooting");
            package_extract_dir("common/!_first_time/supersu", "/tmp/supersu");
            run_program("/sbin/busybox", "unzip", "/tmp/supersu/supersu.zip", "META-INF/com/google/android/*", "-d", "/tmp/supersu");
@@ -51,10 +58,16 @@ then
 
            run_program("/sbin/mount", "/data");
            run_program("/sbin/mount", "/system");
-    endif;
-	
+    endif; 
+    
+    ui_print("|-> removing stock OAT blobs");
+        delete_recursive("/system/framework/arm");
+
+    ui_print("|-> installing dev framework");
+	package_extract_dir("common/!_first_time/prep2dev", "/system");
+
     if 
-        file_getprop("/tmp/aroma-data/prep.prop","item.0.3") == "1"
+        file_getprop("/tmp/aroma-data/prep.prop","item.0.4") == "1"
     then
         ui_print("|-> erasing Cache Partition");
             format("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/cache", "0", "/cache");
@@ -62,7 +75,8 @@ then
         ui_print("|-> erasing Dalvik-Cache");
             delete_recursive("/data/dalvik-cache");
             delete_recursive("/data/resource-cache");
-    endif;
+    endif; 
+
 endif;
 
 ui_print("@install");
