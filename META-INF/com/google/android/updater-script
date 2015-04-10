@@ -580,10 +580,10 @@ if
     file_getprop("/tmp/aroma-data/sysui.prop","item.0.6") == "1"
 then
     ui_print("|-> battery percentage		      APPLIED");
-    	run_program("/tmp/tweaks.sh", "sys", "tweaks_battery_percentage", "2");
+    	run_program("/tmp/tweaks.sh", "sys", "status_bar_show_battery_percent", "2");
 else
     ui_print("|-> battery percentage		      DISABLED");
-    	run_program("/tmp/tweaks.sh", "sys", "tweaks_battery_percentage", "0");
+    	run_program("/tmp/tweaks.sh", "sys", "status_bar_show_battery_percent", "0");
 endif;
 
 if
