@@ -1,5 +1,5 @@
 # ===========================================
-# updater-script for xpirt-modPack
+# updater-script for xpirt modPack GPE 5.1
 # ===========================================
 
 set_progress(0.01);
