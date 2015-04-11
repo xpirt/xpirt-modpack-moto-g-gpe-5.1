@@ -122,14 +122,13 @@ if prop("way.prop","selected")=="2" then
       "prep.prop",
       
       "install busybox","",1,
-      "install init.d support","",1,
       "install root","",1,
       "wipe caches","",1
     );
 endif;
 
 if prop("way.prop","selected")=="3" then
-    writetmpfile("prep.prop", "item.0.1=1\nitem.0.2=1\nitem.0.3=1\nitem.0.4=1\n");
+    writetmpfile("prep.prop", "item.0.1=1\nitem.0.2=1\nitem.0.3=1\n");
 endif;
 
 #Select mods
