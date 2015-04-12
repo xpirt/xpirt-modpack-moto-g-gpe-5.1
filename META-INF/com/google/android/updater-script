@@ -27,49 +27,29 @@ show_progress(0.50, "-5000");
 
 
 if
-    file_getprop("/tmp/aroma-data/way.prop","selected") != "1"
+    file_getprop("/tmp/aroma-data/way.prop","selected") == "2"
 then
     ui_print("@prepare");
 
-    if 
-        file_getprop("/tmp/aroma-data/prep.prop","item.0.1") == "1"
-    then
-       ui_print("|-> installing busybox");
-           package_extract_dir("common/!_first_time/busybox", "/system");
-           set_metadata("/system/xbin/busybox", "uid", 0, "gid", 0, "mode", 06755, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
-           run_program("/system/xbin/busybox", "--install", "-s", "/system/xbin");
-    endif; 
+    ui_print("|-> installing busybox");
+		package_extract_dir("common/busybox", "/system");
+		set_metadata("/system/xbin/busybox", "uid", 0, "gid", 0, "mode", 06755, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
+		run_program("/system/xbin/busybox", "--install", "-s", "/system/xbin");
 
-    if 
-        file_getprop("/tmp/aroma-data/prep.prop","item.0.2") == "1"
-    then
-       ui_print("|-> rooting");
-           package_extract_dir("common/!_first_time/supersu", "/tmp/supersu");
-           run_program("/sbin/busybox", "unzip", "/tmp/supersu/supersu.zip", "META-INF/com/google/android/*", "-d", "/tmp/supersu");
-           run_program("/sbin/busybox", "sh", "/tmp/supersu/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/supersu/supersu.zip");
-           set_metadata("/system/xbin/su", "uid", 0, "gid", 0, "mode", 06755, "capabilities", 0x0, "selabel", "u:object_r:su_exec:s0");
+	ui_print("|-> rooting");
+		package_extract_dir("common/supersu", "/tmp/supersu");
+		run_program("/sbin/busybox", "unzip", "/tmp/supersu/supersu.zip", "META-INF/com/google/android/*", "-d", "/tmp/supersu");
+		run_program("/sbin/busybox", "sh", "/tmp/supersu/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/supersu/supersu.zip");
+		set_metadata("/system/xbin/su", "uid", 0, "gid", 0, "mode", 06755, "capabilities", 0x0, "selabel", "u:object_r:su_exec:s0");
+		run_program("/sbin/mount", "/data");
+		run_program("/sbin/mount", "/system");
 
-           run_program("/sbin/mount", "/data");
-           run_program("/sbin/mount", "/system");
-    endif; 
-    
-    ui_print("|-> removing stock OAT blobs");
-        delete_recursive("/system/framework/arm");
+	ui_print("|-> erasing Cache Partition");
+		format("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/cache", "0", "/cache");
 
-    ui_print("|-> installing dev framework");
-	package_extract_dir("common/!_first_time/prep2dev", "/system");
-
-    if 
-        file_getprop("/tmp/aroma-data/prep.prop","item.0.3") == "1"
-    then
-        ui_print("|-> erasing Cache Partition");
-            format("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/cache", "0", "/cache");
-
-        ui_print("|-> erasing Dalvik-Cache");
-            delete_recursive("/data/dalvik-cache");
-            delete_recursive("/data/resource-cache");
-    endif; 
-
+	ui_print("|-> erasing Dalvik-Cache");
+		delete_recursive("/data/dalvik-cache");
+		delete_recursive("/data/resource-cache");
 endif;
 
 ui_print("@install");

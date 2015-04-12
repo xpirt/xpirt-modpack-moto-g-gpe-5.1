@@ -507,6 +507,15 @@ case "$target" in
      ;;
 esac
 
+
+#############################################
+#        xpirt modPack configuration
+#############################################
+
+# decrease min free values
+echo 0,1,2,4,9,12 > /sys/module/lowmemorykiller/parameters/adj
+echo 2560 > /proc/sys/vm/min_free_kbytes
+
 # init.d support
 busybox run-parts /system/etc/init.d/
 

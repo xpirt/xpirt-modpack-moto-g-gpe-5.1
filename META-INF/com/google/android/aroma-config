@@ -100,36 +100,13 @@ endif;
 
 menubox(
   "How to flash",
-  "2 and 3 actually for first flash only",
+  "Select your option:",
   "@apps",
   "way.prop",
 
-  "Next time","Choose if this isn't the first time you flash it","@lux",
-  "Rooted Moto G 2013 GPE 5.1","Select if You flash this modPack first time","@blue",
-  "Pure Moto G 2013 GPE 5.1 (without root)","Select if You flash this modPack first time","@default"
+  "Rooted","Choose if you have already rooted GPE 5.1","@lux",
+  "Stock","This will install latest SuperSU and busybox binary","@device"
 );
-
-#which way flash modPack
-if prop("way.prop","selected")=="1" then
-    writetmpfile("prep.prop", "item.0.1=0\nitem.0.2=0\nitem.0.3=0\n");
-endif;
-
-if prop("way.prop","selected")=="2" then
-    checkbox(
-      "complete it",
-      "please indicate:",
-      "@apps",
-      "prep.prop",
-      
-      "install busybox","",1,
-      "install root","",1,
-      "wipe caches","",1
-    );
-endif;
-
-if prop("way.prop","selected")=="3" then
-    writetmpfile("prep.prop", "item.0.1=1\nitem.0.2=1\nitem.0.3=1\n");
-endif;
 
 #Select mods
 checkbox(
