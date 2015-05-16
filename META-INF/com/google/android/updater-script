@@ -2,6 +2,8 @@
 #  updater-script for xpirt modPack GPE 5.1
 # ===========================================
 
+ui_print("xpirt modPack #3 - GPE 5.1");
+
 set_progress(0.01);
 
 ui_print("INIT");
